@@ -1,7 +1,7 @@
 from .validators_br import validator_cpf
 from docassemble.base.util import validation_error
 
-def validation_cpf(value):
+def validate_cpf(value):
     # ao executar a entrevista o docassemble executa as validações
     # antes do usuario preencher o campo, por isso só deve fazer a
     # validação se o campo estiver preenchido

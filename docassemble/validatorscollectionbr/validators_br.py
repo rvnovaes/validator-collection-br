@@ -1,5 +1,6 @@
 import re
 import numpy as np
+from errors_br import *
 
 CPF_REGEX = re.compile(
     r"/\d{3}\.?\d{3}\.?\d{3}\-?\d{2}/"
@@ -18,11 +19,11 @@ def validator_cpf(value,
     # check datatype and regex
     if not isinstance(value, str):
         return "O valor fornecido não é uma string"
-    else:
-        is_valid = CPF_REGEX.search(value)
-
-        if not is_valid:
-            return "Caracteres digitados inválidos"
+    # else:
+    #     is_valid = CPF_REGEX.search(value)
+    #
+    #     if not is_valid:
+    #         return "Caracteres digitados inválidos"
 
     cpf = value
 
@@ -76,7 +77,6 @@ def validator_cpf(value,
 
     # returnig
     if not bool(verificadores == digito_1 + digito_2):
-        return "CPF inválido"
-        raise errors_br.InvalidCpfError()
+        return InvalidCpfError()
 
     return True
