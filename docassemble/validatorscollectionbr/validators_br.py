@@ -1,6 +1,9 @@
 import re
 import numpy as np
 
+CPF_REGEX = re.compile(
+    r"/\d{3}\.?\d{3}\.?\d{3}\-?\d{2}/"
+)
 
 def validator_cpf(value,
                   allow_empty=False,
@@ -8,13 +11,18 @@ def validator_cpf(value,
 
     # check empty
     if not value and not allow_empty:
-        return "O campo está vazio"
+        return "Não foi fornecido nem um valor"
     elif not value:
-        return "O campo está vazio, mas ele não é obrigatório"
+        return None
 
     # check datatype and regex
     if not isinstance(value, str):
-        return "O valor digitado não é uma string"
+        return "O valor fornecido não é uma string"
+    else:
+        is_valid = CPF_REGEX.search(value)
+
+        if not is_valid:
+            return "Caracteres digitados inválidos"
 
     cpf = value
 
@@ -34,11 +42,11 @@ def validator_cpf(value,
 
     # Verificar mínimo
     if len(cpf) < 11:
-        return "O valor tem menos de 11 dígitos"
+        return "O CPF deve ter no mínimo 11 dígitos"
 
     # Verificar máximo
     if len(cpf) > 11:
-        return "O valor tem mais de 11 dígitos"
+        return "O CPF deve ter no máximo 11 dígitos"
 
     # casts each character to int
     cpf = [int(i) for i in cpf]
