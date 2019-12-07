@@ -4,7 +4,7 @@ class NotInListError():
 
 class DataTypeError():
     def msg():
-        return "Tipo de dado inválido"
+        return "Tipo de dado fornecido inválido"
 
 class InvalidCpfError():
     def msg():
