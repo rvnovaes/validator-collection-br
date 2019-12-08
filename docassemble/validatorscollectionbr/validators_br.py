@@ -1,7 +1,7 @@
 import re
 import numpy as np
 
-#from .errors_br import *
+from .errors_br import *
 
 CPF_REGEX = re.compile(
     r"/\d{3}\.?\d{3}\.?\d{3}\-?\d{2}/"
@@ -34,8 +34,6 @@ def validator_cpf(value,
     #     if not is_valid:
     #         return "Caracteres digitados inválidos"
 
-    value
-
     # defining the two vectors of validation --> http://www.macoratti.net/alg_cpf.htm
     lista_validacao_um = [10, 9, 8, 7, 6, 5, 4, 3, 2]
     lista_validacao_dois = [11, 10, 9, 8, 7, 6, 5, 4, 3, 2]
@@ -48,7 +46,10 @@ def validator_cpf(value,
 
     # transforms the str into a list of characters
     value = list(value)
-    # verifying the lenght of the cpf
+
+    # verificar se os dígitos são iguais:
+    if all(i == value[0] for i in value):
+        return "O CPF está inválido"
 
     # Verificar mínimo
     if len(value) < 11:
