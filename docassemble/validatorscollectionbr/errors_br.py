@@ -1,19 +1,37 @@
-class NotInListError():
-    def msg():
-        return "O valor fornecido não está na lista"
+class NotInListError(ValueError):
+    """Exception raised when the {value} is not in the list. The validator does
+    not allow values that there are not in the list.
+    """
+    pass
 
-class DataTypeError():
-    def msg():
-        return "Tipo de dado fornecido inválido"
+class DataTypeError(TypeError):
+    """Exception raised when a value is an unexpected datatype.
 
-class InvalidCpfError():
-    def msg():
-        return "O CPF digitado é inválido"
+    **INHERITS FROM:** :class:`TypeError <python:TypeError>`
 
-class InvalidCnpjError():
-    def msg():
-        return "O CNPJ digitado é inválido"
+    """
+    pass
 
-class InvalidCnjError():
-    def msg():
-        return "O CNJ digitado é inválido"
+class InvalidCpfError(ValueError):
+    """Exception thrown when value has unexpected check digits.
+
+    **INHERITS FROM:** :class:`ValueError <python:ValueError>`
+
+    """
+    pass
+
+class InvalidCnpjError(ValueError):
+    """Exception thrown when value has unexpected check digits.
+
+    **INHERITS FROM:** :class:`ValueError <python:ValueError>`
+
+    """
+    pass
+
+class InvalidCnjError(ValueError):
+    """Exception thrown when value has unexpected check digits.
+
+    **INHERITS FROM:** :class:`ValueError <python:ValueError>`
+
+    """
+    pass
