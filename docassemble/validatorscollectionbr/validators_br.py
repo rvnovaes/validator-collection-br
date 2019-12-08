@@ -1,7 +1,7 @@
 import re
 import numpy as np
 
-from .errors_br import *
+#from .errors_br import *
 
 CPF_REGEX = re.compile(
     r"/\d{3}\.?\d{3}\.?\d{3}\-?\d{2}/"
@@ -125,11 +125,11 @@ def validator_cnpj(value,
 
     # Verificar mínimo
     if len(value) < 14:
-        return "O CNPJ deve ter no mínimo 11 dígitos"
+        return "O CNPJ deve ter no mínimo 14 dígitos"
 
     # Verificar máximo
     if len(value) > 14:
-        return "O CNPJ deve ter no máximo 11 dígitos"
+        return "O CNPJ deve ter no máximo 14 dígitos"
 
       # casts each character to int
     value = [int(i) for i in value]
@@ -182,6 +182,7 @@ def validator_cnj(value,
 
     # transforms the str into a list of characters
     cnj_caracteres = list(cnj_caracteres)
+    
     # Verificar mínimo
     if len(cnj_caracteres) < 20:
         return "O CNPJ deve ter no mínimo 20 dígitos"

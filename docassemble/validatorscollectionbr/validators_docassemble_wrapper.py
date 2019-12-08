@@ -1,5 +1,5 @@
-from .validators_br import validator_cpf
-from docassemble.base.util import validation_error
+from validators_br import *
+#from docassemble.base.util import validation_error
 
 def validate_cpf(value):
     # ao executar a entrevista o docassemble executa as validações
@@ -10,7 +10,7 @@ def validate_cpf(value):
     
     msg = validator_cpf(value)
     if msg != True:
-        validation_error(msg)
+#        validation_error(msg)
         return False
     else:
         return True
@@ -24,7 +24,7 @@ def validate_cnpj(value):
     
     msg = validator_cnpj(value)
     if msg != True:
-        validation_error(msg)
+#        validation_error(msg)
         return False
     else:
         return True
@@ -38,7 +38,7 @@ def validate_cnj(value):
     
     msg = validator_cnj(value)
     if msg != True:
-        validation_error(msg)
+#        validation_error(msg)
         return False
     else:
         return True
