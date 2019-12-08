@@ -1,6 +1,7 @@
 import re
 import numpy as np
-from errors_br import *
+
+from .errors_br import *
 
 CPF_REGEX = re.compile(
     r"/\d{3}\.?\d{3}\.?\d{3}\-?\d{2}/"
@@ -12,7 +13,7 @@ def validator_cpf(value,
 
     # check empty
     if not value and not allow_empty:
-        return "Não foi fornecido nem um valor"
+        return "Não foi fornecido um valor"
     elif not value:
         return None
 
