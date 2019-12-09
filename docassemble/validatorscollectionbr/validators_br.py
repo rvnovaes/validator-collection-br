@@ -186,11 +186,11 @@ def validator_cnj(value,
     
     # Verificar mínimo
     if len(cnj_caracteres) < 20:
-        return "O CNPJ deve ter no mínimo 20 dígitos"
+        return "O CNJ deve ter no mínimo 20 dígitos"
 
     # Verificar máximo
     if len(cnj_caracteres) > 20:
-        return "O CNPJ deve ter no máximo 20 dígitos"
+        return "O CNJ deve ter no máximo 20 dígitos"
 
     # check datatype and regex
     if not isinstance(value, str):
