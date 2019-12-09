@@ -1,7 +1,7 @@
 import re
 import numpy as np
+from validator_collection_br.errors_br import NotInListError, DataTypeError, InvalidCpfError, InvalidCnjError, InvalidCnpjError, EmptyValueErrorMsg
 from validator_collection import errors
-from .errors import NotInListError, DataTypeError, InvalidCpfError, InvalidCnjError, InvalidCnpjError
 
 CELLPHONE_REGEX = re.compile(
     r'\(?([0]?[1-9][0-9])\)?\s?(9)?\s?((9|8|7)\d{3})\s?-?\s?(\d{4})$'
@@ -43,7 +43,7 @@ def validator_cpf(value,
     """
     # check empty
     if not value and not allow_empty:
-        raise errors.EmptyValueError()
+        raise EmptyValueErrorMsg('Não são permitidos bval')
     elif not value:
         return None
 
@@ -335,7 +335,7 @@ def cellphoneValidator(value, allow_empty=False):
 
     :param allow_empty:
     If ``True``, returns :obj:`None <python:None>` if ``value`` is empty.
-    If ``False``, raises a :class:`EmptyValueError <validator_collection.errors.EmptyValueError>`
+    If ``False``, raises a :class:`EmptyValueError <validator_collection_br.errors.EmptyValueError>`
     if ``value`` is empty. Defaults to ``False``.
     :type allow_empty: :class:`bool <python:bool>`
 
@@ -357,7 +357,7 @@ def alphanumericValidator(value, allow_empty=False):
 
     :param allow_empty:
     If ``True``, returns :obj:`None <python:None>` if ``value`` is empty.
-    If ``False``, raises a :class:`EmptyValueError <validator_collection.errors.EmptyValueError>`
+    If ``False``, raises a :class:`EmptyValueError <validator_collection_br.errors.EmptyValueError>`
     if ``value`` is empty. Defaults to ``False``.
     :type allow_empty: :class:`bool <python:bool>`
 

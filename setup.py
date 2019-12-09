@@ -42,19 +42,19 @@ def find_package_data(where='.', package='', exclude=standard_exclude, exclude_d
                 out.setdefault(package, []).append(prefix+name)
     return out
 
-setup(name='docassemble.validatorscollectionbr',
+setup(name='wrappers.validatorscollectionbr',
       version='0.0.1',
-      description=('A docassemble extension.'),
-      long_description='# docassemble.validatorbr\r\n\r\nA docassemble extension.\r\n\r\n## Author\r\n\r\nLuis Paim, luis.paimadv@gmail.com\r\n\r\n',
+      description=('A wrappers extension.'),
+      long_description='# wrappers.validatorbr\r\n\r\nA wrappers extension.\r\n\r\n## Author\r\n\r\nLuis Paim, luis.paimadv@gmail.com\r\n\r\n',
       long_description_content_type='text/markdown',
       author='Luis Paim',
       author_email='luis.paimadv@gmail.com',
       license='The MIT License (MIT)',
       url='https://docassemble.org',
       packages=find_packages(),
-      namespace_packages=['docassemble'],
+      namespace_packages=['wrappers'],
       install_requires=['numpy'],
       zip_safe=False,
-      package_data=find_package_data(where='docassemble/validatorscollectionbr/', package='docassemble.validatorscollectionbr'),
+      package_data=find_package_data(where='wrappers/validatorscollectionbr/', package='wrappers.validatorscollectionbr'),
      )
 

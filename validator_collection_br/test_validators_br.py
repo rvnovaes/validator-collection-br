@@ -1,7 +1,8 @@
 import traceback
-from validators import in_list
-from validators.validator_collection.errors import NotInListError
-from validator_collection import validators, errors
+import unittest
+from .validators_br import in_list
+from .errors_br import NotInListError
+from validator_collection_br import validators_br, errors_br
 
 
 
@@ -73,20 +74,58 @@ res_judicata = ["SIM", "NÃO"]
 # print(validates_list('sim', customers_lawyer))
 
 try:
-    validators.email('roberto@novaes.com.br')
-except errors.InvalidEmailError:
+    validators_br.validator_email('roberto@novaes.com.br')
+except errors_br.InvalidEmailError:
     print('Sua anta')
 
 
 try:
     in_list('COCA-COLA', list())
-except errors.EmptyValueError:
+except errors_br.EmptyValueError:
     traceback.print_exc()
 
 try:
     in_list('COCA-COLA', customers)
 except NotInListError:
     traceback.print_exc()
+
+
+class UnitTest(unittest.TestCase):
+
+    cellphoneValidatorsTests = [
+        ["33991749686", True],
+        ["XXX", False],
+        ["33 9 9174 - 7498", True],
+        ["(37)982159000", True],
+        ["37J982159000", False],
+        ["+(55)31991749686", True],
+        ["", False]
+    ]
+
+    alphanumericValidatorsTests = [
+        ["123456", True],
+        ["XXX", True],
+        ["XXX456", True],
+        ["", False],
+        ["....", False],
+        ["asas.5464", False],
+        ["", False]
+    ]
+
+    # def testCellphoneValidator(self):
+    #     for phone in self.cellphoneValidatorsTests:
+    #         self.assertEqual(val.cellphoneValidator(phone[0]), phone[1])
+    #
+    #
+    # def testAlphanumericValidator(self):
+    #     for value in self.alphanumericValidatorsTests:
+    #         self.assertEqual(val.alphanumericValidator(value[0]), value[1])
+
+
+if __name__ == '__main__':
+    unittest.main()
+
+
 
 
 

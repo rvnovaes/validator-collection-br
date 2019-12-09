@@ -15,10 +15,10 @@ CNJ_REGEX = re.compile(
     r"[0-9]{7}\-[0-9]{2}\.[0-9]{4}\.[0-9]{1}\.[0-9]{2}\.[0-9]{4}"
 )
 
+
 def validator_cpf(value,
                   allow_empty=False,
                   ):
-
     # check empty
     if not value and not allow_empty:
         return "Não foi fornecido um valor"
@@ -91,10 +91,10 @@ def validator_cpf(value,
 
     return True
 
-def validator_cnpj(value,
-                  allow_empty=False,
-                  ):
 
+def validator_cnpj(value,
+                   allow_empty=False,
+                   ):
     # check empty
     if not value and not allow_empty:
         return "Não foi fornecido um valor"
@@ -132,7 +132,7 @@ def validator_cnpj(value,
     if len(value) > 14:
         return "O CNPJ deve ter no máximo 14 dígitos"
 
-      # casts each character to int
+    # casts each character to int
     value = [int(i) for i in value]
 
     # calculating the first digit
@@ -164,10 +164,10 @@ def validator_cnpj(value,
 
     return True
 
+
 def validator_cnj(value,
                   allow_empty=False,
                   ):
- 
     # check empty
     if not value and not allow_empty:
         return "Não foi fornecido um valor"
@@ -183,7 +183,7 @@ def validator_cnj(value,
 
     # transforms the str into a list of characters
     cnj_caracteres = list(cnj_caracteres)
-    
+
     # Verificar mínimo
     if len(cnj_caracteres) < 20:
         return "O CNJ deve ter no mínimo 20 dígitos"
@@ -195,11 +195,11 @@ def validator_cnj(value,
     # check datatype and regex
     if not isinstance(value, str):
         return "O valor fornecido não é uma string"
-#    else:
-#        is_valid = CNJ_REGEX.search(value)
-#
-#        if not is_valid:
-#            return "Caracteres digitados inválidos"
+    #    else:
+    #        is_valid = CNJ_REGEX.search(value)
+    #
+    #        if not is_valid:
+    #            return "Caracteres digitados inválidos"
 
     # Estabelecendo variáveis
     cnj_number = value
