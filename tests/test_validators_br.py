@@ -106,7 +106,7 @@ class TestCPF:
             validators_br.cpf(self.malformed_long_cpf)
 
     def test_cpf_wrong_mask(self):
-        with pytest.raises(errors_br.InvalidCpfError):
+        with pytest.raises(errors_br.InvalidCpfMaskError):
             validators_br.cpf(self.malformed_mask_cpf)
 
     def test_cpf_digit(self):

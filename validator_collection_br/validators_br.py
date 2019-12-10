@@ -33,9 +33,10 @@ def cpf(value, allow_empty=False):
 
     Raises:
         - EmptyValueError – if value is None and allow_empty is False
-        - MinimumValueError – if minimum is supplied and value is less than the 11 characters
-        - MaximumValueError – if maximum is supplied and value is more than the 11 characters
+        - MinimumLenghtError – if minimum is supplied and value is less than the 11 characters
+        - MaximumLenghtError – if maximum is supplied and value is more than the 11 characters
         - DataTypeError – If value not is String
+        - InvalidCpfMaskError – If value not is not xxx.xxx.xxx-xx and x is not a digit
         - InvalidCpfError – If value not is valid cpf
     """
     # stores the original passed value to be returned in the end if all validations pass
@@ -65,7 +66,7 @@ def cpf(value, allow_empty=False):
 
     # apply regex to masked value
     if not CPF_REGEX.match(value):
-        raise errors_br.InvalidCpfError('O CPF deve ter o formato xxx.xxx.xxx-xx e não pode conter letras ou caracteres especiais')
+        raise errors_br.InvalidCpfMaskError('O CPF deve ter o formato xxx.xxx.xxx-xx e não pode conter letras ou caracteres especiais')
 
     # defining the two vectors of validation --> http://www.macoratti.net/alg_cpf.htm
     lista_validacao_um = [10, 9, 8, 7, 6, 5, 4, 3, 2]

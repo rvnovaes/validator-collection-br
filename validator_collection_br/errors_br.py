@@ -20,6 +20,15 @@ class InvalidCpfError(ValueError):
     """
     pass
 
+class InvalidCpfMaskError(ValueError):
+    """Exception thrown when value does not follow xxx.xxx.xxx-xx pattern. x must be a digit
+
+    **INHERITS FROM:** :class:`ValueError <python:ValueError>`
+
+    """
+    pass
+
+
 class InvalidCnpjError(ValueError):
     """Exception thrown when value has unexpected check digits.
 
