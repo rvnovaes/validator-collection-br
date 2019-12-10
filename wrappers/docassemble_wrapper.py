@@ -1,5 +1,4 @@
-from validator_collection_br.errors_br import EmptyValueErrorMsg
-from validator_collection_br.validators_br import validator_cpf
+import validator_collection_br.validators_br as validators_br
 from docassemble.base.util import validation_error
 
 
@@ -10,12 +9,12 @@ def validate_cpf(value):
     # if not value:
     #     return True
     try:
-        result = validator_cpf(value)
-    except EmptyValueErrorMsg as e:
-        validation_error(e.value)
-        return result
+        value = validators_br.cpf(value)
+    except Exception as e:
+        msg = validation_error(e.value)
+        validation_error(msg)
 
-
+    return value
 
     # if msg != True:
     #     validation_error(msg)

@@ -1,7 +1,7 @@
 import re
 import numpy as np
-from validator_collection_br.errors_br import NotInListError, DataTypeError, InvalidCpfError, InvalidCnjError, InvalidCnpjError, EmptyValueErrorMsg
-from validator_collection import errors
+from validator_collection_br.errors_br import NotInListError, DataTypeError, InvalidCpfError, InvalidCnjError, InvalidCnpjError
+from validator_collection.errors import EmptyValueError, MinimumLengthError, MaximumLengthError
 
 CELLPHONE_REGEX = re.compile(
     r'\(?([0]?[1-9][0-9])\)?\s?(9)?\s?((9|8|7)\d{3})\s?-?\s?(\d{4})$'
@@ -11,7 +11,7 @@ ALPHANUMERIC_REGEX = re.compile(
 )
 
 CPF_REGEX = re.compile(
-    r"/\d{3}\.?\d{3}\.?\d{3}\-?\d{2}/"
+    r'\d{3}\.\d{3}\.\d{3}-\d{2}'
 )
 
 CNPJ_REGEX = re.compile(
@@ -22,9 +22,8 @@ CNJ_REGEX = re.compile(
     r"/[0-9]{7}\-[0-9]{2}\.[0-9]{4}\.[0-9]{1}\.[0-9]{2}\.[0-9]{4}/"
 )
 
-def validator_cpf(value,
-                  allow_empty=False,
-                  ):
+
+def cpf(value, allow_empty=False):
     """
     Method to validate brazilian cpfs
     Parameters:
@@ -43,7 +42,7 @@ def validator_cpf(value,
     """
     # check empty
     if not value and not allow_empty:
-        raise EmptyValueErrorMsg('Não são permitidos bval')
+        raise EmptyValueError('O valor {value} não pode ser vazio'.format(value=value))
     elif not value:
         return None
 
@@ -52,42 +51,36 @@ def validator_cpf(value,
 
     # check datatype and regex
     if not isinstance(value, str):
-        raise errors.DataTypeError()
+        raise DataTypeError('O CPF digitado não é uma string')
     else:
         is_valid = CPF_REGEX.search(value)
 
         if not is_valid:
-            raise errors.InvalidCpfError()
-
-    cpf = value
+            raise InvalidCpfError('O CPF deve ter o formato xxx.xxx.xxx-xx e não pode conter letras ou caracteres especiais')
 
     # defining the two vectors of validation --> http://www.macoratti.net/alg_cpf.htm
     lista_validacao_um = [10, 9, 8, 7, 6, 5, 4, 3, 2]
     lista_validacao_dois = [11, 10, 9, 8, 7, 6, 5, 4, 3, 2]
 
-    cpf = cpf.replace("-", "")
-    cpf = cpf.replace(".", "")
+    value = value.replace('-', '').replace('.', '')
 
     # extract the verifying digits as string for later comparison
-    verificadores = cpf[-2:]
+    verificadores = value[-2:]
 
     # transforms the str into a list of characters
-    cpf = list(cpf)
-    # verifying the lenght of the cpf
+    value = list(value)
 
-    # Verificar mínimo
-    if len(cpf) < 11:
-        raise errors.MinimumValueError()
-
-    # Verificar máximo
-    if len(cpf) > 11:
-        raise errors.MaximumValueError()
+    # Verifying min and max lenght of the cpf
+    if len(value) < 11:
+        raise MinimumLengthError('O CPF digitado tem menos de 11 dígitos')
+    if len(value) > 11:
+        raise MaximumLengthError('O CPF digitado tem mais de 11 dígitos')
 
     # casts each character to int
-    cpf = [int(i) for i in cpf]
+    value = [int(i) for i in value]
 
     # calculating the first digit
-    cabeca = cpf[:9]
+    cabeca = value[:9]
     dot_prod_1 = np.dot(cabeca, lista_validacao_um)
     dig_1_seed = dot_prod_1 % 11
 
@@ -109,8 +102,11 @@ def validator_cpf(value,
     digito_1 = str(digito_1)
     digito_2 = str(digito_2)
 
-    # returnig
-    return bool(verificadores == digito_1 + digito_2)
+    if not bool(verificadores == digito_1 + digito_2):
+        raise InvalidCpfError('O CPF digitado é inválido')
+
+    return value
+
 
 def validator_cnpj(value,
                   allow_empty=False,
