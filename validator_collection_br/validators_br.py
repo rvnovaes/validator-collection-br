@@ -1,7 +1,7 @@
 import re
 import numpy as np
-from validator_collection_br.errors_br import NotInListError, DataTypeError, InvalidCpfError, InvalidCnjError, InvalidCnpjError
-from validator_collection.errors import EmptyValueError, MinimumLengthError, MaximumLengthError
+from validator_collection_br import errors_br
+from validator_collection import errors
 
 CELLPHONE_REGEX = re.compile(
     r'\(?([0]?[1-9][0-9])\)?\s?(9)?\s?((9|8|7)\d{3})\s?-?\s?(\d{4})$'
@@ -10,9 +10,7 @@ ALPHANUMERIC_REGEX = re.compile(
     r'^[a-zA-Z0-9_]+$'
 )
 
-CPF_REGEX = re.compile(
-    r'\d{3}\.\d{3}\.\d{3}-\d{2}'
-)
+CPF_REGEX = re.compile(r'\d{3}\.\d{3}\.\d{3}-\d{2}')
 
 CNPJ_REGEX = re.compile(
     r"/[0-9]{2}\.?[0-9]{3}\.[0-9]{3}\/?[0-9]{4}\-?[0-9]{2}/"
@@ -40,47 +38,50 @@ def cpf(value, allow_empty=False):
         - DataTypeError – If value not is String
         - InvalidCpfError – If value not is valid cpf
     """
+    # stores the original passed value to be returned in the end if all validations pass
+    cpf = value
+
     # check empty
     if not value and not allow_empty:
-        raise EmptyValueError('O valor {value} não pode ser vazio'.format(value=value))
+        raise errors.EmptyValueError('O valor do CPF não pode ser vazio')
     elif not value:
         return None
+
+    # check datatype
+    if not isinstance(value, str):
+        raise errors_br.DataTypeError('O CPF digitado não é uma string')
 
     # whitespace_padding
     value = value.strip()
 
-    # check datatype and regex
-    if not isinstance(value, str):
-        raise DataTypeError('O CPF digitado não é uma string')
-    else:
-        is_valid = CPF_REGEX.search(value)
+    # remove mask just to check first length and provide more specific error msg
+    unmasked_value = value.replace('-', '').replace('.', '')
 
-        if not is_valid:
-            raise InvalidCpfError('O CPF deve ter o formato xxx.xxx.xxx-xx e não pode conter letras ou caracteres especiais')
+    # Verifying min and max lenght of the cpf
+    if len(unmasked_value) < 11:
+        raise errors.MinimumLengthError('O CPF digitado tem menos de 11 dígitos')
+    if len(unmasked_value) > 11:
+        raise errors.MaximumLengthError('O CPF digitado tem mais de 11 dígitos')
+
+    # apply regex to masked value
+    if not CPF_REGEX.match(value):
+        raise errors_br.InvalidCpfError('O CPF deve ter o formato xxx.xxx.xxx-xx e não pode conter letras ou caracteres especiais')
 
     # defining the two vectors of validation --> http://www.macoratti.net/alg_cpf.htm
     lista_validacao_um = [10, 9, 8, 7, 6, 5, 4, 3, 2]
     lista_validacao_dois = [11, 10, 9, 8, 7, 6, 5, 4, 3, 2]
 
-    value = value.replace('-', '').replace('.', '')
-
     # extract the verifying digits as string for later comparison
-    verificadores = value[-2:]
+    verificadores = unmasked_value[-2:]
 
     # transforms the str into a list of characters
-    value = list(value)
-
-    # Verifying min and max lenght of the cpf
-    if len(value) < 11:
-        raise MinimumLengthError('O CPF digitado tem menos de 11 dígitos')
-    if len(value) > 11:
-        raise MaximumLengthError('O CPF digitado tem mais de 11 dígitos')
+    unmasked_value_list = list(unmasked_value)
 
     # casts each character to int
-    value = [int(i) for i in value]
+    unmasked_value_int_list = [int(i) for i in unmasked_value_list]
 
     # calculating the first digit
-    cabeca = value[:9]
+    cabeca = unmasked_value_int_list[:9]
     dot_prod_1 = np.dot(cabeca, lista_validacao_um)
     dig_1_seed = dot_prod_1 % 11
 
@@ -103,9 +104,9 @@ def cpf(value, allow_empty=False):
     digito_2 = str(digito_2)
 
     if not bool(verificadores == digito_1 + digito_2):
-        raise InvalidCpfError('O CPF digitado é inválido')
+        raise errors_br.InvalidCpfError('O CPF digitado é inválido')
 
-    return value
+    return cpf
 
 
 def validator_cnpj(value,
@@ -199,36 +200,6 @@ def validator_cnpj(value,
     # returnig
     return bool(verificadores == digito_1 + digito_2)
 
-def validator_email(value,
-                    allow_empty=True,
-                    ):
-    """
-    Method to validate e-mail
-
-    Email address validation is...complicated. The methodology that we have
-    adopted here is *generally* compliant with
-    `RFC 5322 <https://tools.ietf.org/html/rfc5322>`_ and uses a combination of
-    string parsing and regular expressions.
-    String parsing in particular is used to validate certain *highly unusual*
-    but still valid email patterns, including the use of escaped text and
-    comments within an email address' local address (the user name part).
-    This approach ensures more complete coverage for unusual edge cases, while
-    still letting us use regular expressions that perform quickly.
-
-    Parameters:
-        - value (str) - The value to validate.
-        - allow_empty (boll) - If True, returns None if value is empty. If False, returns EmptyValueError.
-
-    Returns:
-        - True or false
-
-    Raises:
-        - EmptyValueError – if value is None and allow_empty is False
-        - DataTypeError – If value not is String
-        - InvalidEmailError – If value not is valid e-mail
-    """
-    if validators.email(value) == value:
-        return True
 
 def validator_cnj(value,
                   allow_empty=False,
@@ -321,7 +292,7 @@ def in_list(value, values_list):
     if len(values_list) == 0:
         raise errors.EmptyValueError('The list cannot be empty')
     if value not in values_list:
-        raise NotInListError('The {value} is not in the list'.format(value=value))
+        raise errors_br.NotInListError('The {value} is not in the list'.format(value=value))
 
 def cellphoneValidator(value, allow_empty=False):
     '''
