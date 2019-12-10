@@ -141,3 +141,4 @@ venv.bak/
 
 # mpeltonen/sbt-idea plugin
 .idea_modules/
+!/.pytest_cache/
