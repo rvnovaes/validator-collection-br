@@ -83,11 +83,14 @@ alphanumericValidatorsTests = [
 class TestCPF:
 
     well_formed_cpf = '020.388.410-80'
-    malformed_digit_cpf = '020.388.410-00'
-    malformed_mask_cpf = '02038841080'
     malformed_numeric_cpf = 2038841080
     malformed_short_cpf = '20.388.410-80'
     malformed_long_cpf = '0020.388.410-80'
+    malformed_mask_cpf = '02038841080'
+    malformed_digit_cpf = '020.388.410-00'
+
+    def test_cpf_formation(self):
+        assert self.well_formed_cpf == validators_br.cpf(self.well_formed_cpf)
 
     def test_empty_cpf(self):
         with pytest.raises(errors.EmptyValueError):
@@ -112,6 +115,3 @@ class TestCPF:
     def test_cpf_digit(self):
         with pytest.raises(errors_br.InvalidCpfError):
             validators_br.cpf(self.malformed_digit_cpf)
-
-    def test_cpf_formation(self):
-        assert self.well_formed_cpf == validators_br.cpf(self.well_formed_cpf)
