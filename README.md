@@ -1,2 +1,2 @@
 # validator-collection-br
-Validadores para campos específicos do Brasil
+Validadores para campos específicos do Brasil 
