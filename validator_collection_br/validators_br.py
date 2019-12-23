@@ -12,9 +12,7 @@ ALPHANUMERIC_REGEX = re.compile(
 
 CPF_REGEX = re.compile(r'\d{3}\.\d{3}\.\d{3}-\d{2}')
 
-CNPJ_REGEX = re.compile(
-    r"/[0-9]{2}\.?[0-9]{3}\.[0-9]{3}\/?[0-9]{4}\-?[0-9]{2}/"
-)
+CNPJ_REGEX = re.compile(r'\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}')
 
 CNJ_REGEX = re.compile(
     r"/[0-9]{7}\-[0-9]{2}\.[0-9]{4}\.[0-9]{1}\.[0-9]{2}\.[0-9]{4}/"
@@ -29,7 +27,7 @@ def cpf(value, allow_empty=False):
         - allow_empty (boll) - If True, returns None if value is empty. If False, returns EmptyValueError.
 
     Returns:
-        - True or false
+        - Value
 
     Raises:
         - EmptyValueError – if value is None and allow_empty is False
@@ -78,6 +76,10 @@ def cpf(value, allow_empty=False):
     # transforms the str into a list of characters
     unmasked_value_list = list(unmasked_value)
 
+    # Verifying if the digits are equal
+    if all(i == unmasked_value_list[0] for i in unmasked_value_list):
+        raise errors_br.InvalidCpfError('O CPF digitado é inválido')
+
     # casts each character to int
     unmasked_value_int_list = [int(i) for i in unmasked_value_list]
 
@@ -110,73 +112,69 @@ def cpf(value, allow_empty=False):
     return cpf
 
 
-def validator_cnpj(value,
-                  allow_empty=False,
-                  ):
+def validator_cnpj(value, allow_empty=False):
     """
-    Method to validate brazilian cpfs
+    Method to validate brazilian cnpjs
     Parameters:
         - value (str) - The value to validate.
         - allow_empty (boll) - If True, returns None if value is empty. If False, returns EmptyValueError.
 
     Returns:
-        - True or false
+        - Value
 
     Raises:
         - EmptyValueError – if value is None and allow_empty is False
         - MinimumValueError – if minimum is supplied and value is less than the 11 characters
         - MaximumValueError – if maximum is supplied and value is more than the 11 characters
         - DataTypeError – If value not is String
-        - InvalidCnpjError – If value not is valid cpf
+        - InvalidCnpjMaskError – If value not is not xx.xxx.xxx/xxxx-xx and x is not a digit
+        - InvalidCnpjError – If value not is valid cnpj
     """
+    # stores the original passed value to be returned in the end if all validations pass
+    cnpj = value
+
     # check empty
     if not value and not allow_empty:
-        raise errors.EmptyValueError()
+        raise errors.EmptyValueError('O valor do CNPJ não pode ser vazio')
     elif not value:
         return None
+
+    # check datatype
+    if not isinstance(value, str):
+        raise errors_br.DataTypeError('O CNPJ digitado não é uma string')
 
     # whitespace_padding
     value = value.strip()
 
-    # check datatype and regex
-    if not isinstance(value, str):
-        raise errors.DataTypeError()
-    else:
-        is_valid = CNPJ_REGEX.search(value)
+    # remove mask just to check first length and provide more specific error msg
+    unmasked_value = value.replace('-', '').replace('.', '').replace('/', '')
 
-        if not is_valid:
-            raise errors.InvalidCnpjError()
+    # Verifying min and max lenght of the cpf
+    if len(unmasked_value) < 14:
+        raise errors.MinimumLengthError('O CNPJ digitado tem menos de 14 dígitos')
+    if len(unmasked_value) > 14:
+        raise errors.MaximumLengthError('O CNPJ digitado tem mais de 14 dígitos')
 
-    cnpj = value
+    # apply regex to masked value
+    if not CNPJ_REGEX.match(value):
+        raise errors_br.InvalidCnpjMaskError(
+            'O CNPJ deve ter o formato xx.xxx.xxx/xxxx-xx e não pode conter letras ou caracteres especiais')
 
     # defining the two vectors of validation --> http://www.macoratti.net/alg_cpf.htm
     lista_validacao_um = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]
     lista_validacao_dois = [6, 5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]
 
-    cnpj = cnpj.replace("-", "")
-    cnpj = cnpj.replace(".", "")
-    cnpj = cnpj.replace("/", "")
-
     # extract the verifying digits as string for later comparison
-    verificadores = cnpj[-2:]
+    verificadores = unmasked_value[-2:]
 
     # transforms the str into a list of characters
-    cnpj = list(cnpj)
-    # verifying the lenght of the cnpj
-
-    # Verificar mínimo
-    if len(cnpj) < 14:
-        raise errors.MinimumValueError()
-
-    # Verificar máximo
-    if len(cnpj) > 14:
-        raise errors.MaximumValueError()
+    unmasked_value_list = list(unmasked_value)
 
     # casts each character to int
-    cnpj = [int(i) for i in cnpj]
+    unmasked_value_int_list = [int(i) for i in unmasked_value_list]
 
     # calculating the first digit
-    cabeca = cnpj[:9]
+    cabeca = unmasked_value_int_list[:12]
     dot_prod_1 = np.dot(cabeca, lista_validacao_um)
     dig_1_seed = dot_prod_1 % 11
 
@@ -199,20 +197,22 @@ def validator_cnpj(value,
     digito_2 = str(digito_2)
 
     # returnig
-    return bool(verificadores == digito_1 + digito_2)
+    if not bool(verificadores == digito_1 + digito_2):
+        raise errors_br.InvalidCnpjError('O CNPJ digitado é inválido')
 
+    return cnpj
 
 def validator_cnj(value,
                   allow_empty=False,
                   ):
     """
-    Method to validate brazilian cpfs
+    Method to validate brazilian cnjs
     Parameters:
         - value (str) - The value to validate.
         - allow_empty (boll) - If True, returns None if value is empty. If False, returns EmptyValueError.
 
     Returns:
-        - True or false
+        - Value
 
     Raises:
         - EmptyValueError – if value is None and allow_empty is False

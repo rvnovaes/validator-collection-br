@@ -115,3 +115,80 @@ class TestCPF:
     def test_cpf_digit(self):
         with pytest.raises(errors_br.InvalidCpfError):
             validators_br.cpf(self.malformed_digit_cpf)
+
+class TestCNPJ:
+
+    well_formed_cpf = '020.388.410-80'
+    malformed_numeric_cpf = 2038841080
+    malformed_short_cpf = '20.388.410-80'
+    malformed_long_cpf = '0020.388.410-80'
+    malformed_mask_cpf = '02038841080'
+    malformed_digit_cpf = '020.388.410-00'
+    malformed_equal_digit_cpf = '333.333.333-33'
+
+    def test_cpf_formation(self):
+        assert self.well_formed_cpf == validators_br.cpf(self.well_formed_cpf)
+
+    def test_empty_cpf(self):
+        with pytest.raises(errors.EmptyValueError):
+            validators_br.cpf('')
+
+    def test_cpf_string_type(self):
+        with pytest.raises(errors_br.DataTypeError):
+            validators_br.cpf(self.malformed_numeric_cpf)
+
+    def test_cpf_too_short(self):
+        with pytest.raises(errors.MinimumLengthError):
+            validators_br.cpf(self.malformed_short_cpf)
+
+    def test_cpf_too_long(self):
+        with pytest.raises(errors.MaximumLengthError):
+            validators_br.cpf(self.malformed_long_cpf)
+
+    def test_cpf_wrong_mask(self):
+        with pytest.raises(errors_br.InvalidCpfMaskError):
+            validators_br.cpf(self.malformed_mask_cpf)
+
+    def test_cpf_digit(self):
+        with pytest.raises(errors_br.InvalidCpfError):
+            validators_br.cpf(self.malformed_digit_cpf)
+
+    def test_cpf_equal_digit(self):
+        with pytest.raises(errors_br.InvalidCpfError):
+            validators_br.cpf(self.malformed_equal_digit_cpf)
+
+class TestCNPJ:
+
+    well_formed_cnpj = '33.000.167/0001-01'
+    malformed_numeric_cnpj = 33000167000101
+    malformed_short_cnpj = '33.000.167/001-01'
+    malformed_long_cnpj = '033.000.167/0001-01'
+    malformed_mask_cnpj = '33000167000101'
+    malformed_digit_cnpj = '33.000.167/0001-02'
+
+    def test_cnpj_formation(self):
+        assert self.well_formed_cnpj == validators_br.cnpj(self.well_formed_cnpj)
+
+    def test_empty_cnpj(self):
+        with pytest.raises(errors.EmptyValueError):
+            validators_br.cnpj('')
+
+    def test_cnpj_string_type(self):
+        with pytest.raises(errors_br.DataTypeError):
+            validators_br.cnpj(self.malformed_numeric_cnpj)
+
+    def test_cnpj_too_short(self):
+        with pytest.raises(errors.MinimumLengthError):
+            validators_br.cnpj(self.malformed_short_cnpj)
+
+    def test_cnpj_too_long(self):
+        with pytest.raises(errors.MaximumLengthError):
+            validators_br.cnpj(self.malformed_long_cnpj)
+
+    def test_cnpj_wrong_mask(self):
+        with pytest.raises(errors_br.InvalidCnpjMaskError):
+            validators_br.cnpj(self.malformed_mask_cnpj)
+
+    def test_cnpj_digit(self):
+        with pytest.raises(errors_br.InvalidCnpjError):
+            validators_br.cnpj(self.malformed_digit_cnpj)

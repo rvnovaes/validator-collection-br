@@ -37,7 +37,23 @@ class InvalidCnpjError(ValueError):
     """
     pass
 
+class InvalidCnpjMaskError(ValueError):
+    """Exception thrown when value has unexpected check digits.
+
+    **INHERITS FROM:** :class:`ValueError <python:ValueError>`
+
+    """
+    pass
+
 class InvalidCnjError(ValueError):
+    """Exception thrown when value has unexpected check digits.
+
+    **INHERITS FROM:** :class:`ValueError <python:ValueError>`
+
+    """
+    pass
+
+class InvalidCnjMaskError(ValueError):
     """Exception thrown when value has unexpected check digits.
 
     **INHERITS FROM:** :class:`ValueError <python:ValueError>`
