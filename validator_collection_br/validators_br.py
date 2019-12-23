@@ -112,7 +112,7 @@ def cpf(value, allow_empty=False):
     return cpf
 
 
-def validator_cnpj(value, allow_empty=False):
+def cnpj(value, allow_empty=False):
     """
     Method to validate brazilian cnpjs
     Parameters:
@@ -202,9 +202,7 @@ def validator_cnpj(value, allow_empty=False):
 
     return cnpj
 
-def validator_cnj(value,
-                  allow_empty=False,
-                  ):
+def cnj(value, allow_empty=False):
     """
     Method to validate brazilian cnjs
     Parameters:
