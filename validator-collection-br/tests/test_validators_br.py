@@ -1,7 +1,4 @@
-import traceback
 import pytest
-from validator_collection_br.validators_br import in_list
-from validator_collection_br.errors_br import NotInListError
 from validator_collection_br import validators_br, errors_br
 from validator_collection import errors
 
@@ -117,9 +114,10 @@ class TestCPF:
         with pytest.raises(errors_br.InvalidCpfError):
             validators_br.cpf(self.malformed_digit_cpf)
 
-    def test_cpf_digit(self):
-        with pytest.raises(errors_br.InvalidCpfError):
+    def test_cpf_equal_digit(self):
+        with pytest.raises(errors_br.InvalidCpfEqualError):
             validators_br.cpf(self.malformed_equal_digit_cpf)
+
 
 class TestCNPJ:
 

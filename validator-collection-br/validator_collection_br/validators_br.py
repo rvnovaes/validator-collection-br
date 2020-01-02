@@ -42,13 +42,13 @@ def cpf(value, allow_empty=False):
 
     # check empty
     if not value and not allow_empty:
-        raise errors.EmptyValueError('O valor do CPF não pode ser vazio')
+        raise errors.EmptyValueError('O valor do CPF não pode ser vazio.')
     elif not value:
         return None
 
     # check datatype
     if not isinstance(value, str):
-        raise errors_br.DataTypeError('O CPF digitado não é uma string')
+        raise errors_br.DataTypeError('O CPF digitado não é uma string.')
 
     # whitespace_padding
     value = value.strip()
@@ -58,13 +58,13 @@ def cpf(value, allow_empty=False):
 
     # Verifying min and max lenght of the cpf
     if len(unmasked_value) < 11:
-        raise errors.MinimumLengthError('O CPF digitado tem menos de 11 dígitos')
+        raise errors.MinimumLengthError('O CPF digitado tem menos de 11 dígitos.')
     if len(unmasked_value) > 11:
-        raise errors.MaximumLengthError('O CPF digitado tem mais de 11 dígitos')
+        raise errors.MaximumLengthError('O CPF digitado tem mais de 11 dígitos.')
 
     # apply regex to masked value
     if not CPF_REGEX.match(value):
-        raise errors_br.InvalidCpfMaskError('O CPF deve ter o formato xxx.xxx.xxx-xx e não pode conter letras ou caracteres especiais')
+        raise errors_br.InvalidCpfMaskError('O CPF deve ter o formato xxx.xxx.xxx-xx e não pode conter letras ou caracteres especiais.')
 
     # defining the two vectors of validation --> http://www.macoratti.net/alg_cpf.htm
     lista_validacao_um = [10, 9, 8, 7, 6, 5, 4, 3, 2]
@@ -78,7 +78,7 @@ def cpf(value, allow_empty=False):
 
     # Verifying if the digits are equal
     if all(i == unmasked_value_list[0] for i in unmasked_value_list):
-        raise errors_br.InvalidCpfError('O CPF digitado é inválido')
+        raise errors_br.InvalidCpfEqualError('O CPF não pode ter todos os dígitos idênticos.')
 
     # casts each character to int
     unmasked_value_int_list = [int(i) for i in unmasked_value_list]
@@ -107,7 +107,7 @@ def cpf(value, allow_empty=False):
     digito_2 = str(digito_2)
 
     if not bool(verificadores == digito_1 + digito_2):
-        raise errors_br.InvalidCpfError('O CPF digitado é inválido')
+        raise errors_br.InvalidCpfError('O CPF digitado é inválido.')
 
     return cpf
 
@@ -135,13 +135,13 @@ def cnpj(value, allow_empty=False):
 
     # check empty
     if not value and not allow_empty:
-        raise errors.EmptyValueError('O valor do CNPJ não pode ser vazio')
+        raise errors.EmptyValueError('O valor do CNPJ não pode ser vazio.')
     elif not value:
         return None
 
     # check datatype
     if not isinstance(value, str):
-        raise errors_br.DataTypeError('O CNPJ digitado não é uma string')
+        raise errors_br.DataTypeError('O CNPJ digitado não é uma string.')
 
     # whitespace_padding
     value = value.strip()
@@ -151,14 +151,14 @@ def cnpj(value, allow_empty=False):
 
     # Verifying min and max lenght of the cpf
     if len(unmasked_value) < 14:
-        raise errors.MinimumLengthError('O CNPJ digitado tem menos de 14 dígitos')
+        raise errors.MinimumLengthError('O CNPJ digitado tem menos de 14 dígitos.')
     if len(unmasked_value) > 14:
-        raise errors.MaximumLengthError('O CNPJ digitado tem mais de 14 dígitos')
+        raise errors.MaximumLengthError('O CNPJ digitado tem mais de 14 dígitos.')
 
     # apply regex to masked value
     if not CNPJ_REGEX.match(value):
         raise errors_br.InvalidCnpjMaskError(
-            'O CNPJ deve ter o formato xx.xxx.xxx/xxxx-xx e não pode conter letras ou caracteres especiais')
+            'O CNPJ deve ter o formato xx.xxx.xxx/xxxx-xx e não pode conter letras ou caracteres especiais.')
 
     # defining the two vectors of validation --> http://www.macoratti.net/alg_cpf.htm
     lista_validacao_um = [5, 4, 3, 2, 9, 8, 7, 6, 5, 4, 3, 2]
@@ -196,9 +196,9 @@ def cnpj(value, allow_empty=False):
     digito_1 = str(digito_1)
     digito_2 = str(digito_2)
 
-    # returnig
+    # returning
     if not bool(verificadores == digito_1 + digito_2):
-        raise errors_br.InvalidCnpjError('O CNPJ digitado é inválido')
+        raise errors_br.InvalidCnpjError('O CNPJ digitado é inválido.')
 
     return cnpj
 
@@ -244,12 +244,12 @@ def cnj(value, allow_empty=False):
 
     # check datatype and regex
     if not isinstance(value, str):
-        raise errors.DataTypeError()
+        raise errors_br.DataTypeError()
     else:
         is_valid = CNJ_REGEX.search(value)
 
         if not is_valid:
-            raise errors.InvalidCnjError()
+            raise errors_br.InvalidCnjError()
 
     # Estabelecendo variáveis
     cnj_number = value
@@ -285,7 +285,7 @@ def cnj(value, allow_empty=False):
     if digits_DD == '1':
         return True
     else:
-        raise errors.InvalidCnjError()
+        raise errors_br.InvalidCnjError()
 
 def in_list(value, values_list):
     if len(values_list) == 0:

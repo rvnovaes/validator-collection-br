@@ -20,6 +20,14 @@ class InvalidCpfError(ValueError):
     """
     pass
 
+class InvalidCpfEqualError(ValueError):
+    """Exception thrown when all digits of value are equal
+
+    **INHERITS FROM:** :class:`ValueError <python:ValueError>`
+
+    """
+    pass
+
 class InvalidCpfMaskError(ValueError):
     """Exception thrown when value does not follow xxx.xxx.xxx-xx pattern. x must be a digit
 

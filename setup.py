@@ -1,60 +1,67 @@
-import os
-import sys
-from setuptools import setup, find_packages
-from fnmatch import fnmatchcase
-from distutils.util import convert_path
+from setuptools import setup
 
-standard_exclude = ('*.pyc', '*~', '.*', '*.bak', '*.swp*')
-standard_exclude_directories = ('.*', 'CVS', '_darcs', './build', './dist', 'EGG-INFO', '*.egg-info')
-def find_package_data(where='.', package='', exclude=standard_exclude, exclude_directories=standard_exclude_directories):
-    out = {}
-    stack = [(convert_path(where), '', package)]
-    while stack:
-        where, prefix, package = stack.pop(0)
-        for name in os.listdir(where):
-            fn = os.path.join(where, name)
-            if os.path.isdir(fn):
-                bad_name = False
-                for pattern in exclude_directories:
-                    if (fnmatchcase(name, pattern)
-                        or fn.lower() == pattern.lower()):
-                        bad_name = True
-                        break
-                if bad_name:
-                    continue
-                if os.path.isfile(os.path.join(fn, '__init__.py')):
-                    if not package:
-                        new_package = name
-                    else:
-                        new_package = package + '.' + name
-                        stack.append((fn, '', new_package))
-                else:
-                    stack.append((fn, prefix + name + '/', package))
-            else:
-                bad_name = False
-                for pattern in exclude:
-                    if (fnmatchcase(name, pattern)
-                        or fn.lower() == pattern.lower()):
-                        bad_name = True
-                        break
-                if bad_name:
-                    continue
-                out.setdefault(package, []).append(prefix+name)
-    return out
+# read the contents of README file
+from os import path
+this_directory = path.abspath(path.dirname(__file__))
+with open(path.join(this_directory, 'README.rst'), encoding='utf-8') as f:
+    long_description = f.read()
 
-setup(name='wrappers.validatorscollectionbr',
-      version='0.0.1',
-      description=('A wrappers extension.'),
-      long_description='# wrappers.validatorbr\r\n\r\nA wrappers extension.\r\n\r\n## Author\r\n\r\nLuis Paim, luis.paimadv@gmail.com\r\n\r\n',
-      long_description_content_type='text/markdown',
-      author='Luis Paim',
-      author_email='luis.paimadv@gmail.com',
-      license='The MIT License (MIT)',
-      url='https://docassemble.org',
-      packages=find_packages(),
-      namespace_packages=['wrappers'],
-      install_requires=['numpy'],
-      zip_safe=False,
-      package_data=find_package_data(where='wrappers/validatorscollectionbr/', package='wrappers.validatorscollectionbr'),
-     )
+setup(
+    name='validator-collection-br',
+    version='0.0.3',
+    description=('Validators for common business needs of Brazil'),
+    long_description=long_description,
+    packages=['validator-collection-br', 'validator-collection-br.tests', 'validator-collection-br.wrappers',
+              'validator-collection-br.validator_collection_br'],
+    url='https://github.com/silexsistemas/validator-collection-br',
+    license='MIT',
+    author='Roberto Vasconcelos Novaes',
+    author_email='roberto.novaes@silexsistemas.com.br',
 
+    classifiers=[  # Optional
+        # How mature is this project? Common values are
+        #   3 - Alpha
+        #   4 - Beta
+        #   5 - Production/Stable
+        'Development Status :: 3 - Alpha',
+
+        # Indicate who your project is intended for
+        'Environment :: Console',
+        'Operating System :: OS Independent',
+        'Intended Audience :: Developers',
+
+        'Topic :: Software Development :: Libraries',
+        'Topic :: Utilities',
+        'Topic :: Software Development :: Libraries :: Python Modules',
+
+        # Pick your license as you wish
+        'License :: OSI Approved :: MIT License',
+
+        # Specify the Python versions you support here. In particular, ensure
+        # that you indicate whether you support Python 2, Python 3 or both.
+        'Programming Language :: Python :: 3.6',
+    ],
+
+    install_requires=[
+        'numpy',
+        'regex',
+        'validator-collection',
+    ],
+    # List additional groups of dependencies here (e.g. development
+    # dependencies). Users will be able to install these using the "extras"
+    # syntax, for example:
+    #
+    #   $ pip install sampleproject[dev]
+    #
+    # Similar to `install_requires` above, these must be valid existing
+    # projects.
+    extras_require={
+        'docassemble' : ['docassemble.base'],
+        'test': ['pytest']
+    },
+    project_urls = {  # Optional
+                   'Documentation': 'https://github.com/silexsistemas/validator-collection-br',
+                   'Bug Reports': 'https://github.com/silexsistemas/validator-collection-br/issues',
+                   'Source': 'https://github.com/silexsistemas/validator-collection-br',
+               },
+)
