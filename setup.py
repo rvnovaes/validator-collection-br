@@ -7,12 +7,12 @@ with open(path.join(this_directory, 'README.rst'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
-    name='validator-collection-br',
-    version='0.0.3',
+    name='validator_collection_br',
+    version='0.0.5',
     description=('Validators for common business needs of Brazil'),
     long_description=long_description,
-    packages=['validator-collection-br', 'validator-collection-br.tests', 'validator-collection-br.wrappers',
-              'validator-collection-br.validator_collection_br'],
+    packages=['validator_collection_br', 'validator_collection_br.tests', 'validator_collection_br.wrappers',
+              'validator_collection_br.validator_collection_br'],
     url='https://github.com/silexsistemas/validator-collection-br',
     license='MIT',
     author='Roberto Vasconcelos Novaes',
