@@ -8,10 +8,10 @@ with open(path.join(this_directory, 'README.rst'), encoding='utf-8') as f:
 
 setup(
     name='validator_collection_br',
-    version='0.0.6',
+    version='0.0.7',
     description=('Validators for common business needs of Brazil'),
     long_description=long_description,
-    packages=['tests', 'wrappers', 'validator_collection_br'],
+    packages=['validator_collection_br'],
     url='https://github.com/silexsistemas/validator-collection-br',
     license='MIT',
     author='Roberto Vasconcelos Novaes',
@@ -46,18 +46,7 @@ setup(
         'regex',
         'validator-collection',
     ],
-    # List additional groups of dependencies here (e.g. development
-    # dependencies). Users will be able to install these using the "extras"
-    # syntax, for example:
-    #
-    #   $ pip install sampleproject[dev]
-    #
-    # Similar to `install_requires` above, these must be valid existing
-    # projects.
-    extras_require={
-        'docassemble' : ['docassemble.base'],
-        'test': ['pytest']
-    },
+
     project_urls = {  # Optional
                    'Documentation': 'https://github.com/silexsistemas/validator-collection-br',
                    'Bug Reports': 'https://github.com/silexsistemas/validator-collection-br/issues',
