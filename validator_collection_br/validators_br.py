@@ -53,7 +53,7 @@ def cpf(value, allow_empty=False):
     # whitespace_padding
     value = value.strip()
 
-    # remove mask just to check first length and provide more specific error msg
+    # remove mask just to verify first length and provide more specific error msg
     unmasked_value = value.replace('-', '').replace('.', '')
 
     # Verifying min and max lenght of the cpf
@@ -133,20 +133,20 @@ def cnpj(value, allow_empty=False):
     # stores the original passed value to be returned in the end if all validations pass
     cnpj = value
 
-    # check empty
+    # verify empty
     if not value and not allow_empty:
         raise errors.EmptyValueError('O valor do CNPJ não pode ser vazio.')
     elif not value:
         return None
 
-    # check datatype
+    # verify datatype
     if not isinstance(value, str):
         raise errors_br.DataTypeError('O CNPJ digitado não é uma string.')
 
     # whitespace_padding
     value = value.strip()
 
-    # remove mask just to check first length and provide more specific error msg
+    # remove mask just to verify first length and provide more specific error msg
     unmasked_value = value.replace('-', '').replace('.', '').replace('/', '')
 
     # Verifying min and max lenght of the cpf
@@ -209,6 +209,7 @@ def cnpj(value, allow_empty=False):
 
     return cnpj
 
+
 def cnj(value, allow_empty=False):
     """
     Method to validate brazilian cnjs
@@ -226,7 +227,7 @@ def cnj(value, allow_empty=False):
         - DataTypeError – If value not is String
         - InvalidCnjError – If value not is valid cpf
     """
-    # check empty
+    # verify empty
     if not value and not allow_empty:
         raise errors.EmptyValueError()
     elif not value:
@@ -249,7 +250,7 @@ def cnj(value, allow_empty=False):
     if len(cnj_caracteres) > 20:
         raise errors.MaximumValueError()
 
-    # check datatype and regex
+    # verify datatype and regex
     if not isinstance(value, str):
         raise errors_br.DataTypeError()
     else:
