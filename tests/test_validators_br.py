@@ -127,6 +127,7 @@ class TestCNPJ:
     malformed_long_cnpj = '033.000.167/0001-01'
     malformed_mask_cnpj = '33000167000101'
     malformed_digit_cnpj = '33.000.167/0001-02'
+    malformed_equal_digit_cnpj = '11.111.111/1111-11'
 
     def test_cnpj_formation(self):
         assert self.well_formed_cnpj == validators_br.cnpj(self.well_formed_cnpj)
@@ -154,3 +155,7 @@ class TestCNPJ:
     def test_cnpj_digit(self):
         with pytest.raises(errors_br.InvalidCnpjError):
             validators_br.cnpj(self.malformed_digit_cnpj)
+
+    def test_cnpj_equal_digit(self):
+        with pytest.raises(errors_br.InvalidCnpjEqualError):
+            validators_br.cnpj(self.malformed_equal_digit_cnpj)

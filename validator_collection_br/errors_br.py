@@ -4,6 +4,7 @@ class NotInListError(ValueError):
     """
     pass
 
+
 class DataTypeError(TypeError):
     """Exception raised when a value is an unexpected datatype.
 
@@ -11,6 +12,7 @@ class DataTypeError(TypeError):
 
     """
     pass
+
 
 class InvalidCpfError(ValueError):
     """Exception thrown when value has unexpected check digits.
@@ -20,6 +22,7 @@ class InvalidCpfError(ValueError):
     """
     pass
 
+
 class InvalidCpfEqualError(ValueError):
     """Exception thrown when all digits of value are equal
 
@@ -27,6 +30,7 @@ class InvalidCpfEqualError(ValueError):
 
     """
     pass
+
 
 class InvalidCpfMaskError(ValueError):
     """Exception thrown when value does not follow xxx.xxx.xxx-xx pattern. x must be a digit
@@ -45,6 +49,7 @@ class InvalidCnpjError(ValueError):
     """
     pass
 
+
 class InvalidCnpjMaskError(ValueError):
     """Exception thrown when value has unexpected check digits.
 
@@ -53,6 +58,16 @@ class InvalidCnpjMaskError(ValueError):
     """
     pass
 
+
+class InvalidCnpjEqualError(ValueError):
+    """Exception thrown when all digits of value are equal
+
+    **INHERITS FROM:** :class:`ValueError <python:ValueError>`
+
+    """
+    pass
+
+
 class InvalidCnjError(ValueError):
     """Exception thrown when value has unexpected check digits.
 
@@ -60,6 +75,7 @@ class InvalidCnjError(ValueError):
 
     """
     pass
+
 
 class InvalidCnjMaskError(ValueError):
     """Exception thrown when value has unexpected check digits.

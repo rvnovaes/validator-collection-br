@@ -170,6 +170,13 @@ def cnpj(value, allow_empty=False):
     # transforms the str into a list of characters
     unmasked_value_list = list(unmasked_value)
 
+    # Verifying if the digits are equal
+    if all(i == unmasked_value_list[0] for i in unmasked_value_list):
+        raise errors_br.InvalidCnpjEqualError('O CNPJ não pode ter todos os dígitos idênticos.')
+
+    # transforms the str into a list of characters
+    unmasked_value_list = list(unmasked_value)
+
     # casts each character to int
     unmasked_value_int_list = [int(i) for i in unmasked_value_list]
 
