@@ -8,14 +8,14 @@ with open(path.join(this_directory, 'README.rst'), encoding='utf-8') as f:
 
 setup(
     name='validator_collection_br',
-    version='0.0.7',
+    version='0.0.8',
     description=('Validators for common business needs of Brazil'),
     long_description=long_description,
     packages=['validator_collection_br'],
     url='https://github.com/silexsistemas/validator-collection-br',
     license='MIT',
-    author='Roberto Vasconcelos Novaes',
-    author_email='roberto.novaes@silexsistemas.com.br',
+    author='Roberto Vasconcelos Novaes, Luiz Guilherme Paim, Iasmini Gomes, Helena Gomes, Germain Pereira',
+    author_email='rnovaes@ufmg.br, luis.paimadv@gmail.com, iasmini@silexsistemas.com.br, helena.gomes@silexsistemas.com.br, pereira.germain@outlook.com',
 
     classifiers=[  # Optional
         # How mature is this project? Common values are
