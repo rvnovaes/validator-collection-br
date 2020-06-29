@@ -8,13 +8,13 @@ with open(path.join(this_directory, 'README.rst'), encoding='utf-8') as f:
 
 setup(
     name='validator_collection_br',
-    version='0.0.9',
+    version='0.0.10',
     description=('Validators for common business needs of Brazil'),
     long_description=long_description,
     packages=['validator_collection_br'],
-    url='https://github.com/silexsistemas/validator-collection-br',
+    url='https://github.com/rvnovaes/validator-collection-br',
     license='MIT',
-    author='Roberto Vasconcelos Novaes, Luiz Guilherme Paim, Iasmini Gomes, Helena Gomes, Germain Pereira',
+    author='Roberto Vasconcelos Novaes, Luis Guilherme Paim, Iasmini Gomes, Helena Gomes, Germain Pereira',
     author_email='rnovaes@ufmg.br, luis.paimadv@gmail.com, iasmini@silexsistemas.com.br, helena.gomes@silexsistemas.com.br, pereira.germain@outlook.com',
 
     classifiers=[  # Optional
@@ -48,8 +48,8 @@ setup(
     ],
 
     project_urls = {  # Optional
-                   'Documentation': 'https://github.com/silexsistemas/validator-collection-br',
-                   'Bug Reports': 'https://github.com/silexsistemas/validator-collection-br/issues',
-                   'Source': 'https://github.com/silexsistemas/validator-collection-br',
+                   'Documentation': 'https://github.com/rvnovaes/validator-collection-br',
+                   'Bug Reports': 'https://github.com/rvnovaes/validator-collection-br/issues',
+                   'Source': 'https://github.com/rvnovaes/validator-collection-br',
                },
 )
