@@ -295,14 +295,16 @@ def cnj(value, allow_empty=False):
     else:
         raise errors_br.InvalidCnjError()
 
+
 def in_list(value, values_list):
     if len(values_list) == 0:
         raise errors.EmptyValueError('The list cannot be empty')
     if value not in values_list:
         raise errors_br.NotInListError('The {value} is not in the list'.format(value=value))
 
+
 def cellphoneValidator(value, allow_empty=False):
-    '''
+    """
     Validate that 'value' is a Brazilian Cellphonenumber
 
     :param value: The value to validate.
@@ -317,14 +319,15 @@ def cellphoneValidator(value, allow_empty=False):
         return None
     elif value is None or value == "":
         raise errors.EmptyValueError('value cannot be None')
-    '''
+    """
     if CELLPHONE_REGEX.search(value):
         return True
     else:
         return False
 
+
 def alphanumericValidator(value, allow_empty=False):
-    '''
+    """
     Validate that 'value' contains alphanumeric digits.
 
     :param value: The value to validate.
@@ -339,7 +342,7 @@ def alphanumericValidator(value, allow_empty=False):
         return None
     elif value is None or value == "":
         raise errors.EmptyValueError('value cannot be None')
-    '''
+    """
     if ALPHANUMERIC_REGEX.match(value):
         return True
     else:
