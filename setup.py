@@ -8,7 +8,7 @@ with open(path.join(this_directory, 'README.rst'), encoding='utf-8') as f:
 
 setup(
     name='validator_collection_br',
-    version='0.0.10',
+    version='0.0.11',
     description=('Validators for common business needs of Brazil'),
     long_description=long_description,
     packages=['validator_collection_br'],
@@ -47,7 +47,7 @@ setup(
         'validator-collection',
     ],
 
-    project_urls = {  # Optional
+    project_urls={  # Optional
                    'Documentation': 'https://github.com/rvnovaes/validator-collection-br',
                    'Bug Reports': 'https://github.com/rvnovaes/validator-collection-br/issues',
                    'Source': 'https://github.com/rvnovaes/validator-collection-br',
