@@ -18,6 +18,8 @@ CNJ_REGEX = re.compile(
     r"/[0-9]{7}\-[0-9]{2}\.[0-9]{4}\.[0-9]{1}\.[0-9]{2}\.[0-9]{4}/"
 )
 
+NOME_COMPLETO_REGEX = re.compile(r"^[a-zA-Z]+(?:\s['a-zA-Z]+)+$")
+
 
 def cpf(value, allow_empty=False):
     """
@@ -347,3 +349,47 @@ def alphanumericValidator(value, allow_empty=False):
         return True
     else:
         return False
+
+
+def nome_completo(value, allow_empty=False):
+    """
+    Method to validate full names.
+    Parameters:
+        - value (str) - The value to validate.
+        - allow_empty (boll) - If True, returns None if value is empty. If False, returns EmptyValueError.
+
+    Returns:
+        - Value
+
+    Raises:
+        - EmptyValueError – if value is None and allow_empty is False
+        - DataTypeError – If value not is String
+        - InvalidFullNameError – If value not is a full name
+        - MinimumLenghtError – if minimum is supplied and value is less than the 3 characters
+    """
+    # whitespace_padding
+    value = value.strip()
+
+    # remove apostrophe if last character
+    while value[-1] == "'":
+        value = value[0:len(value) - 1]
+
+    # check empty
+    if not value and not allow_empty:
+        raise errors.EmptyValueError('O nome não pode ser vazio.')
+    elif not value:
+        return None
+
+    # check datatype
+    if not isinstance(value, str):
+        raise errors_br.DataTypeError('O nome deve ser uma string.')
+
+    # Verifying space between words (at least 2 words)
+    if value.find(' ') == -1:
+        raise errors_br.InvalidFullNameError('Digite o nome completo.')
+
+    # Verifying min lenght
+    if len(value) < 3:
+        raise errors.MinimumLengthError('Digite o nome completo.')
+
+    return value

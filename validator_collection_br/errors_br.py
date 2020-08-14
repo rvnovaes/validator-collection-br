@@ -84,3 +84,12 @@ class InvalidCnjMaskError(ValueError):
 
     """
     pass
+
+
+class InvalidFullNameError(ValueError):
+    """Exception thrown when value has unexpected check digits.
+
+    **INHERITS FROM:** :class:`ValueError <python:ValueError>`
+
+    """
+    pass
