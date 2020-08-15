@@ -18,7 +18,8 @@ CNJ_REGEX = re.compile(
     r"/[0-9]{7}\-[0-9]{2}\.[0-9]{4}\.[0-9]{1}\.[0-9]{2}\.[0-9]{4}/"
 )
 
-NOME_COMPLETO_REGEX = re.compile(r"^[a-zA-Z]+(?:\s['a-zA-Z]+)+$")
+# permite caracteres com e sem acentuacao, ', - e deve ter pelo menos um espaco entre as palavras
+NOME_COMPLETO_REGEX = re.compile(r"^['-a-zA-ZA-zÀ-ÿ]+(?:\s['-a-zA-ZA-zÀ-ÿ]+)+$")
 
 
 def cpf(value, allow_empty=False):
@@ -365,14 +366,13 @@ def nome_completo(value, allow_empty=False):
         - EmptyValueError – if value is None and allow_empty is False
         - DataTypeError – If value not is String
         - InvalidFullNameError – If value not is a full name
-        - MinimumLenghtError – if minimum is supplied and value is less than the 3 characters
     """
     # whitespace_padding
-    value = value.strip()
-
-    # remove apostrophe if last character
-    while value[-1] == "'":
-        value = value[0:len(value) - 1]
+    if isinstance(value, str):
+        value = value.strip()
+    else:
+        # check datatype
+        raise errors_br.DataTypeError('O nome deve ser uma string.')
 
     # check empty
     if not value and not allow_empty:
@@ -380,16 +380,13 @@ def nome_completo(value, allow_empty=False):
     elif not value:
         return None
 
-    # check datatype
+    # verify datatype and regex
     if not isinstance(value, str):
         raise errors_br.DataTypeError('O nome deve ser uma string.')
+    else:
+        is_valid = NOME_COMPLETO_REGEX.search(value)
 
-    # Verifying space between words (at least 2 words)
-    if value.find(' ') == -1:
-        raise errors_br.InvalidFullNameError('Digite o nome completo.')
-
-    # Verifying min lenght
-    if len(value) < 3:
-        raise errors.MinimumLengthError('Digite o nome completo.')
+        if not is_valid:
+            raise errors_br.InvalidFullNameError()
 
     return value

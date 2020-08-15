@@ -159,3 +159,30 @@ class TestCNPJ:
     def test_cnpj_equal_digit(self):
         with pytest.raises(errors_br.InvalidCnpjEqualError):
             validators_br.cnpj(self.malformed_equal_digit_cnpj)
+
+
+class TestFullName:
+    def test_empty_full_name(self):
+        with pytest.raises(errors.EmptyValueError):
+            validators_br.nome_completo('')
+
+    def test_full_name_string_type(self):
+        dataType = [1, 12]
+        with pytest.raises(errors_br.DataTypeError):
+            for name in dataType:
+                validators_br.nome_completo(name)
+
+    def test_full_name_valid(self):
+        valid = [
+            "a a",
+            "joao a",
+            "joão a",
+            "joana d'arc",
+            "joão paulo II",
+            "Catherine Zeta-Jones",
+            "CAHTERINE ZETA-JONES",
+        ]
+
+        # invalid = ["", "a", "joao", "joao paulo 2", "1", "1 2", False]
+        for name in valid:
+            assert name == validators_br.nome_completo(name)
