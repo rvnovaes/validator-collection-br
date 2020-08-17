@@ -352,83 +352,34 @@ def alphanumericValidator(value, allow_empty=False):
         return False
 
 
-def not_empty(value,
-              allow_empty = False,
-              **kwargs):
-    """Validate that ``value`` is not empty.
-
-    :param value: The value to validate.
-
-    :param allow_empty: If ``True``, returns :obj:`None <python:None>` if
-      ``value`` is empty. If ``False``, raises a
-      :class:`EmptyValueError <validator_collection.errors.EmptyValueError>`
-      if ``value`` is empty. Defaults to ``False``.
-    :type allow_empty: :class:`bool <python:bool>`
-
-    :returns: ``value`` / :obj:`None <python:None>`
-
-    :raises EmptyValueError: if ``value`` is empty and ``allow_empty`` is ``False``
+def person_full_name(value, allow_empty=False):
     """
-    if not value and allow_empty:
-        return None
+    Valida nome completo. Permite caracteres maiúsculos e minúsculos, com e sem acentuacao, "'", "-" e deve ter pelo menos um espaço entre as palavras.
+    Parâmetros:
+        - value (str) - Valor a ser validado.
+        - allow_empty (boolean) - Se True, retorna None se o valor for vazio. Se False, retorna InvalidFullNameError.
+
+    Retorno:
+        - Value
+    """
+
+    # verify empty
+    if not value and not allow_empty:
+        raise errors.EmptyValueError('O nome completo não pode ser vazio.')
     elif not value:
-        raise errors.EmptyValueError('O valor não pode ser vazio.')
+        return None
+
+    # whitespace_padding
+    if isinstance(value, str):
+        value = value.strip()
+    else:
+        # check datatype
+        raise errors_br.DataTypeError('O nome completo deve ser uma string.')
+
+    # verify regex
+    is_valid = NOME_COMPLETO_REGEX.search(value)
+
+    if not is_valid:
+        raise errors_br.InvalidFullNameError('O nome completo informado é inválido.')
 
     return value
-
-
-def nome_completo(value, allow_empty=False, **kwargs):
-    """
-    Method to validate full names.
-    Parameters:
-        - value (str) - The value to validate.
-        - allow_empty (boll) - If True, returns None if value is empty. If False, returns EmptyValueError.
-
-    Returns:
-        - Value
-
-    Raises:
-        - EmptyValueError – if value is None and allow_empty is False
-        - DataTypeError – If value not is String
-        - InvalidFullNameError – If value not is a full name
-    """
-
-    try:
-        value = not_empty(value, **kwargs)
-    except SyntaxError as error:
-        raise error
-    except Exception:
-        return False
-
-    return True
-
-
-
-    # # whitespace_padding
-    # if isinstance(value, str):
-    #     value = value.strip()
-    # else:
-    #     # check datatype
-    #     raise errors_br.DataTypeError('O nome deve ser uma string.')
-
-    # # check empty
-    # if not_empty(value, False):
-    #     return None
-    # else:
-    #     raise errors.EmptyValueError('O nome não pode ser vazio.')
-
-    # if not value and not allow_empty:
-    #     raise errors.EmptyValueError('O nome não pode ser vazio.')
-    # elif not value:
-    #     return None
-
-    # # verify datatype and regex
-    # if not isinstance(value, str):
-    #     raise errors_br.DataTypeError('O nome deve ser uma string.')
-    # else:
-    #     is_valid = NOME_COMPLETO_REGEX.search(value)
-    #
-    #     if not is_valid:
-    #         raise errors_br.InvalidFullNameError()
-    #
-    # return value

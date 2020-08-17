@@ -167,44 +167,27 @@ class TestCNPJ:
         ('', True, False),
         (set(), True, False),
         ((), True, False),
-        (['a'], False, False),
-        ('a', False, False),
-        (set('a'), False, False),
-    ])
-def test_not_empty(value, fails, allow_empty):
+        (['a'], True, False),
+        ('a', True, False),
+        (1, True, False),
+        (set('a'), True, False),
+        ('joao', True, False),
+        ('joao carlos', False, False),
+        ('joão carlos', False, False),
+        ("joana d'arc", False, False),
+        ("Joana D'arc", False, False),
+        ("JOANA D'ARC", False, False),
+        ('Catherine Zeta-Jones', False, False),
+        ('joão paulo II', False, False),
+])
+def test_person_full_name(value, fails, allow_empty):
     """Test the none validator."""
     if not fails:
-        validated = validators_br.not_empty(value, allow_empty=allow_empty)
+        validated = validators_br.person_full_name(value, allow_empty=allow_empty)
         if not value and allow_empty:
             assert validated is None
         elif value:
             assert validated is not None
     else:
         with pytest.raises((ValueError, TypeError)):
-            validated = validators_br.not_empty(value, allow_empty=allow_empty)
-
-
-    # def test_empty_full_name(self):
-    #     with pytest.raises(errors.EmptyValueError):
-    #         validators_br.nome_completo('')
-    #
-    # def test_full_name_string_type(self):
-    #     dataType = [1, 12]
-    #     with pytest.raises(errors_br.DataTypeError):
-    #         for name in dataType:
-    #             validators_br.nome_completo(name)
-    #
-    # def test_full_name_valid(self):
-    #     valid = [
-    #         "a a",
-    #         "joao a",
-    #         "joão a",
-    #         "joana d'arc",
-    #         "joão paulo II",
-    #         "Catherine Zeta-Jones",
-    #         "CAHTERINE ZETA-JONES",
-    #     ]
-    #
-    #     # invalid = ["", "a", "joao", "joao paulo 2", "1", "1 2", False]
-    #     for name in valid:
-    #         assert name == validators_br.nome_completo(name)
+            validated = validators_br.person_full_name(value, allow_empty=allow_empty)
