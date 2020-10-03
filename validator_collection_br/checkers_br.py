@@ -61,3 +61,23 @@ def is_cnj(value, **kwargs):
         return False
 
     return True
+
+
+@disable_checker_on_env
+def is_person_full_name(value, **kwargs):
+    """Indicate whether value is a person full name.
+    Note:
+        param value: The value to evaluate.
+        returns: True if value is valid, False if it is not.
+        rtype: :class:bool <python:bool>
+        raises SyntaxError: if kwargs contains duplicate keyword parameters or duplicates
+            keyword parameters passed to the underlying validator
+    """
+    try:
+        value = validators_br.person_full_name(value, **kwargs)
+    except SyntaxError as error:
+        raise error
+    except Exception:
+        return False
+
+    return True

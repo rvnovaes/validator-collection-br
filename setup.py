@@ -8,7 +8,7 @@ with open(path.join(this_directory, 'README.rst'), encoding='utf-8') as f:
 
 setup(
     name='validator_collection_br',
-    version='0.0.11',
+    version='0.0.12',
     description=('Validators for common business needs of Brazil'),
     long_description=long_description,
     packages=['validator_collection_br'],
