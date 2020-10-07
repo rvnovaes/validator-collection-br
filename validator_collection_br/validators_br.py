@@ -19,7 +19,7 @@ CNJ_REGEX = re.compile(
 )
 
 # permite caracteres com e sem acentuacao, ', - e deve ter pelo menos um espaco entre as palavras
-NOME_COMPLETO_REGEX = re.compile(r"^['-a-zA-ZA-zÀ-ÿ]+(?:\s['-a-zA-ZA-zÀ-ÿ]+)+$")
+NOME_COMPLETO_REGEX = re.compile(r"^['a-zA-ZA-zÀ-ÿ-]+(?:\s['a-zA-ZA-zÀ-ÿ-]+)+$")
 
 
 def cpf(value, allow_empty=False):
